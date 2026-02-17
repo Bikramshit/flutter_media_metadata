@@ -51,27 +51,33 @@ void MetadataRetriever::SetFilePath(std::string file_path) {
       // https://github.com/MediaArea/MediaInfoLib/pull/1098
       //
       auto format = TO_STRING(Get(MediaInfoDLL::Stream_General, 0, L"Format"));
-      if (Strings::ToUpperCase(format) == "OGG") {
-        uint8_t* data = decoded_album_art.data();
-        size_t size = decoded_album_art.size();
-        size_t header = 0;
-        uint32_t length = 0;
-        RM(4);
-        length = U32_AT(data);
-        header += length;
-        RM(4);
-        RM(length);
-        length = U32_AT(data);
-        header += length;
-        RM(4);
-        RM(length);
-        RM(4 * 4);
-        length = U32_AT(data);
-        RM(4);
-        header += 32;
-        size = length;
-        album_art_.reset(new std::vector(data, data + length));
-      }
+if (Strings::ToUpperCase(format) == "OGG") {
+  uint8_t* data = decoded_album_art.data();
+  size_t size = decoded_album_art.size();
+  (void)size;  // silence unused warning
+
+  uint32_t length = 0;
+
+  RM(4);
+  length = U32_AT(data);
+
+  RM(4);
+  RM(length);
+
+  length = U32_AT(data);
+
+  RM(4);
+  RM(length);
+
+  RM(4 * 4);
+
+  length = U32_AT(data);
+
+  RM(4);
+
+  album_art_.reset(new std::vector<uint8_t>(data, data + length));
+}
+
     } else {
       album_art_ = nullptr;
     }

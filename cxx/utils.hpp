@@ -102,31 +102,59 @@ class Strings {
   }
 
   static inline std::string Replace(std::string string, std::string match,
-                                    std::string replace) {
-    std::string result;
-    size_t match_size = match.size();
-    size_t last_index = 0;
-    size_t match_counter = 0;
-    for (int index = 0; index < string.size(); index++) {
-      if (match_counter != 0) {
-        if (match_counter == match.size() - 1)
-          match_counter = 0;
-        else
-          match_counter++;
-      } else if (index == string.size() - match.size()) {
-        result.append(replace);
-        break;
-      } else if (string.substr(index, match_size) == match &&
-                 match_counter == 0) {
-        result.append(replace);
-        last_index = match_size + index;
+                                  std::string replace) {
+  std::string result;
+  size_t match_size = match.size();
+  size_t match_counter = 0;
+
+  for (size_t index = 0; index < string.size(); index++) {
+    if (match_counter != 0) {
+      if (match_counter == match.size() - 1)
+        match_counter = 0;
+      else
         match_counter++;
-      } else {
-        result.push_back(string[index]);
-      }
+    } else if (index == string.size() - match.size()) {
+      result.append(replace);
+      break;
+    } else if (string.substr(index, match_size) == match &&
+               match_counter == 0) {
+      result.append(replace);
+      match_counter++;
+    } else {
+      result.push_back(string[index]);
     }
-    return result;
   }
+
+  return result;
+}
+
+
+  // static inline std::string Replace(std::string string, std::string match,
+  //                                   std::string replace) {
+  //   std::string result;
+  //   size_t match_size = match.size();
+  //   size_t last_index = 0;
+  //   size_t match_counter = 0;
+  //   for (int index = 0; index < string.size(); index++) {
+  //     if (match_counter != 0) {
+  //       if (match_counter == match.size() - 1)
+  //         match_counter = 0;
+  //       else
+  //         match_counter++;
+  //     } else if (index == string.size() - match.size()) {
+  //       result.append(replace);
+  //       break;
+  //     } else if (string.substr(index, match_size) == match &&
+  //                match_counter == 0) {
+  //       result.append(replace);
+  //       last_index = match_size + index;
+  //       match_counter++;
+  //     } else {
+  //       result.push_back(string[index]);
+  //     }
+  //   }
+  //   return result;
+  // }
 
   static inline std::string ToUpperCase(std::string& string) {
     std::transform(string.begin(), string.end(), string.begin(), ::toupper);
